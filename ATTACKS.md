@@ -47,7 +47,7 @@ Displays only ICMP packets, including:
 
 ### Packet Capture
 
-[Wireshark Pcap file](pcaps/icmp_ping_scan.pcapng)
+[Wireshark Pcap file](pcaps/icmp_ping_scan.pcap)
 
 ### Observations
 
