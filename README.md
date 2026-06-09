@@ -8,7 +8,6 @@ This project demonstrates network traffic analysis and security monitoring using
 
 A Kali Linux system was used to generate controlled network activity and security testing scenarios, while a Parrot OS system with Wireshark installed was used to capture and analyze the resulting network traffic. Both virtual machines were configured using a Bridged Network Adapter, enabling them to obtain IP addresses from the same network and communicate as if they were separate physical devices on the local network. This setup allowed realistic packet capture and protocol analysis during various network security experiments.  
 
-This project utilizes Wireshark for network traffic capture and analysis. To better understand the Wireshark interface, packet analysis process, packet panes, and filtering mechanisms used throughout this project, refer to the detailed documentation is found in [WIRESHARK_INFO.md](WIRESHARK_INFO.md).
 
 ---    
 
@@ -92,7 +91,9 @@ This project utilizes Wireshark for network traffic capture and analysis. To bet
 
 ## Attack Documentation
 
-Detailed attack scenarios, Wireshark analysis, filters, screenshots, and observations can be found in [ATTACKS.md](ATTACKS.md).
+Detailed attack scenarios, Wireshark analysis, filters, screenshots, and observations can be found in [ATTACKS.md](ATTACKS.md).  
+
+This project utilizes Wireshark for network traffic capture and analysis. To better understand the Wireshark interface, packet analysis process, packet panes, and filtering mechanisms used throughout this project, refer to the detailed documentation is found in [WIRESHARK_INFO.md](WIRESHARK_INFO.md).
 
 ## Author
 
