@@ -88,6 +88,10 @@ A Kali Linux system was used to generate controlled network activity and securit
 
 ---
 
+## Attack Documentation
+
+Detailed attack scenarios, Wireshark analysis, filters, screenshots, and observations can be found in [ATTACKS.md](ATTACKS.md).
+
 ## Author
 
 This project was developed as part of a practical network security and traffic analysis study using Wireshark in a controlled LAN environment.
