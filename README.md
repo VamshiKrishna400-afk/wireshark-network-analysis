@@ -94,6 +94,7 @@ Detailed attack scenarios, Wireshark analysis, filters, screenshots, and observa
 
 ## Author
 
-This project was developed as part of a practical network security and traffic analysis study using Wireshark in a controlled WLAN environment.
-Vamshi Krishna GK
+This project was developed as part of a practical network security and traffic analysis study using Wireshark in a controlled WLAN environment.  
+
+Vamshi Krishna GK  
 Cybersecurity Enthusiast
