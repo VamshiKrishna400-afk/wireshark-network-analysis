@@ -25,7 +25,7 @@ fping -aqg 192.168.1.0/24
 
 ### Attack Execution Screenshot
 
-[Attacker Screenshot](screenshots/attacker/screenshots/attacker/icmp_ping_scan_attack.png)
+[Attacker Screenshot](screenshots/attacker/icmp_ping_scan_attack.png)
 
 
 ### Wireshark Display Filter
