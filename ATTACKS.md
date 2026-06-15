@@ -1,27 +1,34 @@
-## 1. ICMP Ping Scan (Host Discovery)
+## 1. ICMP Host Discovery
 
 ### Objective
 
-Identify active hosts on the network by sending ICMP Echo Requests and analyzing the corresponding responses.
+An ICMP (Internet Control Message Protocol) host discovery, often called a ping sweep, is a network reconnaissance technique used to identify active IP addresses. It systematically sends ICMP Echo Request packets to a range of IP addresses and waits for Echo Reply responses to confirm that hosts are live and reachable.
 
 ### Attack Tool
 
-**fping**
+**Nmap**
 
 ### Command Used
 
 ```bash id="tt1g0v"
-fping -aqg 192.168.1.0/24
+sudo nmap -sn -PE 192.168.29.0/24
 ```
 
 ### Command Explanation
 
-| Option           | Description                                           |
-| ---------------- | ----------------------------------------------------- |
-| `-a`             | Show only alive hosts.                                |
-| `-q`             | Run in quiet mode.                                    |
-| `-g`             | Generate target IPs from the specified network range. |
-| `192.168.1.0/24` | Network range being scanned.                          |
+| Option           | Description                                                                     |
+| ---------------- | --------------------------------------------------------------------------------|
+| `sudo`            | Runs Nmap with administrative privileges, allowing it to send raw ICMP packets.|
+| `-sn`             | Performs host discovery only (Ping Scan); skips port scanning.                 |
+| `-PE`             | Uses ICMP Echo Requests (Ping) to discover active hosts.                       |
+| `192.168.29.0/24` | Network range being scanned.                                                   |
+
+### Working  
+  
+1. Nmap sends an ICMP Echo Request (Type 8) to each target IP.  
+2. Active hosts respond with an ICMP Echo Reply (Type 0).  
+3. Nmap marks responding hosts as Up.  
+4. Hosts that do not respond may be offline or filtering ICMP traffic.
 
 ### Attack Execution Screenshot
 
@@ -66,11 +73,11 @@ The scan successfully identified active hosts on the WLAN network and demonstrat
 
 ---
 
-## 2. ARP Scan (Local Network Host Discovery)
+## 2. ARP Host Discovery
 
 ### Objective
 
-Identify active devices on the local network using ARP requests and responses.
+ARP (Address Resolution Protocol) host discovery is the process of locating active devices on a local network (subnet) by sending Address Resolution Protocol (ARP) requests to IP addresses. It is the most reliable and fastest method for local host discovery, as ARP packets operate at Layer 2 (Data Link layer) and cannot be blocked by standard host firewalls.
 
 ### Attack Tool
 
@@ -128,3 +135,4 @@ ARP scanning is commonly used during network reconnaissance to enumerate hosts a
 ### Findings
 
 The scan successfully identified active devices on the network and demonstrated how ARP traffic can be analyzed using Wireshark to understand local network communications.
+
