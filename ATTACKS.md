@@ -1,8 +1,8 @@
-## 1. ICMP Host Discovery
+## 1. ICMP Echo Host Scan
 
 ### Objective
 
-An ICMP (Internet Control Message Protocol) host discovery, often called a ping sweep, is a network reconnaissance technique used to identify active IP addresses. It systematically sends ICMP Echo Request packets to a range of IP addresses and waits for Echo Reply responses to confirm that hosts are live and reachable.
+An ICMP (Internet Control Message Protocol) Echo host discovery scan, often called a ping sweep, is a network reconnaissance technique used to identify active IP addresses. It systematically sends ICMP Echo Request packets to a range of IP addresses and waits for Echo Reply responses to confirm that hosts are live and reachable.
 
 ### Attack Tool
 
@@ -32,7 +32,7 @@ sudo nmap -sn -PE 192.168.29.0/24
 
 ### Attack Execution Screenshot
 
-[Attacker Screenshot](screenshots/attacker/icmp_ping_scan_attack.png)
+![ICMP Echo Host Scan Attack](screenshots/attacker/icmp_echo_scan_attack.png)
 
 
 ### Wireshark Display Filter
@@ -43,18 +43,20 @@ icmp
 
 ### Filter Explanation
 
-Displays only ICMP packets, including:
+Displays ICMP packets generated during the scan, including:
 
-* Echo Request
-* Echo Reply
+- ICMP Echo Request
+- ICMP Echo Reply
+
+This filter helps isolate host discovery traffic from other network activity.
 
 ### Wireshark Analysis Screenshot
 
-[Analyzer Screenshot](screenshots/wireshark/icmp_ping_scan_capture.png)
+![ICMP Echo Host Scan](screenshots/wireshark/icmp_echo_scan_capture.png)
 
 ### Packet Capture
 
-[Wireshark Pcap file](pcaps/icmp_ping_scan.pcap)
+[Wireshark Pcap file](pcaps/icmp_echo_scan.pcap)
 
 ### Observations
 
@@ -67,17 +69,16 @@ Displays only ICMP packets, including:
 
 ICMP ping scanning is commonly used during the reconnaissance phase to discover live hosts before further enumeration.
 
-### Findings
+### Report
 
-The scan successfully identified active hosts on the WLAN network and demonstrated how ICMP traffic appears in Wireshark.
+[Report](reports/icmp_echo_scan_report.md)
 
----
 
-## 2. ARP Host Discovery
+## 2. ARP Host Scan
 
 ### Objective
 
-ARP (Address Resolution Protocol) host discovery is the process of locating active devices on a local network (subnet) by sending Address Resolution Protocol (ARP) requests to IP addresses. It is the most reliable and fastest method for local host discovery, as ARP packets operate at Layer 2 (Data Link layer) and cannot be blocked by standard host firewalls.
+An ARP (Address Resolution Protocol) host discovery scan is a network reconnaissance technique used to identify active devices on a local network. It works by sending ARP Requests to target IP addresses and listening for ARP Replies, which reveal the IP and MAC addresses of active hosts.
 
 ### Attack Tool
 
@@ -85,37 +86,47 @@ ARP (Address Resolution Protocol) host discovery is the process of locating acti
 
 ### Command Used
 
-```bash id="p6z1pr"
-nmap -sn 192.168.1.0/24
+```bash
+sudo nmap -sn 192.168.29.0/24
 ```
 
 ### Command Explanation
 
-| Option           | Description                                        |
-| ---------------- | -------------------------------------------------- |
-| `-sn`            | Ping Scan (Host Discovery only, no port scanning). |
-| `192.168.1.0/24` | Target network range.                              |
+| Option            | Description                                                               |
+| ----------------- | ------------------------------------------------------------------------- |
+| `sudo`            | Runs Nmap with administrative privileges, allowing direct network access. |
+| `-sn`             | Performs host discovery only (Ping Scan); skips port scanning.            |
+| `192.168.29.0/24` | Network range being scanned.                                              |
+
+### Working
+
+1. Nmap sends ARP Requests to hosts within the target subnet.
+2. Active devices respond with ARP Replies containing their MAC addresses.
+3. Nmap identifies responding hosts as Up.
+4. The discovered IP and MAC addresses are displayed in the scan results.
 
 ### Attack Execution Screenshot
 
-[Attacker Screenshot](screenshots/attacker/arp_scan_attack.png)
+![ARP Host Scan Attack](screenshots/attacker/arp_scan_attack.png)
 
 ### Wireshark Display Filter
 
-```wireshark id="84mngz"
+```wireshark
 arp
 ```
 
 ### Filter Explanation
 
-Displays only ARP packets, including:
+Displays ARP packets generated during the scan, including:
 
-* ARP Requests
-* ARP Replies
+* ARP Request
+* ARP Reply
+
+This filter helps isolate ARP-based host discovery traffic from other network activity.
 
 ### Wireshark Analysis Screenshot
 
-[Analyzer screenshot](screenshots/wireshark/arp_scan_capture.png)
+![ARP Host Scan](screenshots/wireshark/arp_scan_capture.png)
 
 ### Packet Capture
 
@@ -123,16 +134,394 @@ Displays only ARP packets, including:
 
 ### Observations
 
-* ARP Requests were broadcast to discover devices on the local network.
+* ARP Requests were broadcast across the local network.
 * Active devices responded with ARP Replies.
-* MAC addresses associated with IP addresses were identified.
-* Layer 2 communication behavior was successfully analyzed.
+* IP-to-MAC address mappings were successfully identified.
+* Layer 2 communication between devices was observed.
 
 ### Security Significance
 
-ARP scanning is commonly used during network reconnaissance to enumerate hosts and map IP-to-MAC address relationships within a local network.
+ARP scanning is commonly used during the reconnaissance phase to enumerate devices on a local network and map IP addresses to MAC addresses before conducting further assessment activities.
 
-### Findings
+### Report
 
-The scan successfully identified active devices on the network and demonstrated how ARP traffic can be analyzed using Wireshark to understand local network communications.
+[Report](reports/arp_scan_report.md)
 
+
+## 3. TCP SYN Host Scan
+
+### Objective
+
+A TCP SYN host discovery scan is a reconnaissance technique used to identify active hosts by sending TCP SYN packets to specific ports and monitoring the responses. Hosts that respond with SYN-ACK or RST packets are considered active and reachable on the network.
+
+### Attack Tool
+
+**Nmap**
+
+### Command Used
+
+```bash
+sudo nmap -sn -PS80,443 192.168.29.0/24
+```
+
+### Command Explanation
+
+| Option            | Description                                                                 |
+| ----------------- | --------------------------------------------------------------------------- |
+| `sudo`            | Runs Nmap with administrative privileges, allowing raw packet transmission. |
+| `-sn`             | Performs host discovery only; skips port scanning.                          |
+| `-PS80,443`       | Sends TCP SYN probes to ports 80 (HTTP) and 443 (HTTPS).                    |
+| `192.168.29.0/24` | Network range being scanned.                                                |
+
+### Working
+
+1. Nmap sends TCP SYN packets to ports 80 and 443 on each target host.
+2. Active hosts respond with either:
+   * **SYN-ACK** if the port is open.
+   * **RST** if the port is closed.
+3. Any valid response indicates that the host is reachable.
+4. Nmap marks responding systems as Up.
+
+### Attack Execution Screenshot
+
+![TCP SYN Host Scan Attack](screenshots/attacker/tcp_syn_scan_attack.png)
+
+### Wireshark Display Filter
+
+```wireshark
+tcp.flags.syn == 1
+```
+
+### Filter Explanation
+
+Displays TCP packets containing the SYN flag, including:
+
+* TCP SYN Requests
+* TCP SYN-ACK Responses
+
+This filter helps isolate TCP-based host discovery traffic from other network activity.
+
+### Wireshark Analysis Screenshot
+
+![TCP SYN Host Scan](screenshots/wireshark/tcp_syn_scan_capture.png)
+
+### Packet Capture
+
+[Wireshark Pcap file](pcaps/tcp_syn_scan.pcap)
+
+### Observations
+
+* TCP SYN packets were sent to ports 80 and 443 on target hosts.
+* Active hosts responded with SYN-ACK or RST packets.
+* Reachable systems were successfully identified.
+* TCP handshake-related traffic was clearly visible in Wireshark.
+
+### Security Significance
+
+TCP SYN host discovery is commonly used when ICMP traffic is filtered or blocked. It allows attackers and administrators to identify active hosts by leveraging responses from commonly used TCP service ports.
+
+### Report
+
+[Report](reports/tcp_syn_scan_report.md)
+
+
+## 4. TCP ACK Host Scan
+
+### Objective
+
+A TCP ACK host discovery scan is a reconnaissance technique used to identify active hosts by sending TCP ACK packets to specific ports and analyzing the responses. Hosts that respond with TCP RST packets are considered active and reachable on the network.
+
+### Attack Tool
+
+**Nmap**
+
+### Command Used
+
+```bash
+sudo nmap -sn -PA80,443 192.168.29.0/24
+```
+
+### Command Explanation
+
+| Option            | Description                                                                 |
+| ----------------- | --------------------------------------------------------------------------- |
+| `sudo`            | Runs Nmap with administrative privileges, allowing raw packet transmission. |
+| `-sn`             | Performs host discovery only; skips port scanning.                          |
+| `-PA80,443`       | Sends TCP ACK probes to ports 80 (HTTP) and 443 (HTTPS).                    |
+| `192.168.29.0/24` | Network range being scanned.                                                |
+
+### Working
+
+1. Nmap sends TCP ACK packets to ports 80 and 443 on each target host.
+2. Active hosts respond with TCP RST packets because no existing connection is associated with the ACK packet.
+3. The response indicates that the host is reachable.
+4. Nmap marks responding hosts as Up.
+
+### Attack Execution Screenshot
+
+![TCP ACK Host Scan Attack](screenshots/attacker/tcp_ack_scan_attack.png)
+
+### Wireshark Display Filter
+
+```wireshark
+tcp.flags.ack == 1
+```
+
+### Filter Explanation
+
+Displays TCP packets containing the ACK flag, including:
+
+* TCP ACK Requests
+* TCP RST Responses
+
+This filter helps isolate TCP ACK host discovery traffic from other network activity.
+
+### Wireshark Analysis Screenshot
+
+![TCP ACK Host Scan](screenshots/wireshark/tcp_ack_scan_capture.png)
+
+### Packet Capture
+
+[Wireshark Pcap file](pcaps/tcp_ack_scan.pcap)
+
+### Observations
+
+* TCP ACK packets were sent to ports 80 and 443 on target hosts.
+* Active hosts responded with TCP RST packets.
+* Reachable systems were successfully identified.
+* TCP-based host discovery traffic was clearly visible in Wireshark.
+
+### Security Significance
+
+TCP ACK host discovery is useful when ICMP traffic is filtered or blocked. By leveraging TCP responses from commonly accessible ports, it helps identify active hosts while potentially bypassing some network filtering mechanisms.
+
+### Report
+
+[Report](reports/tcp_ack_scan_report.md)
+
+
+## 5. ICMP Timestamp Host Scan
+
+### Objective
+
+An ICMP Timestamp host discovery scan is a reconnaissance technique used to identify active hosts by sending ICMP Timestamp Request packets and analyzing the Timestamp Reply responses. Hosts that respond are considered active and reachable on the network.
+
+### Attack Tool
+
+**Nmap**
+
+### Command Used
+
+```bash id="icmpts"
+sudo nmap -sn -PP 192.168.29.0/24
+```
+
+### Command Explanation
+
+| Option            | Description                                                                      |
+| ----------------- | -------------------------------------------------------------------------------- |
+| `sudo`            | Runs Nmap with administrative privileges, allowing raw ICMP packet transmission. |
+| `-sn`             | Performs host discovery only; skips port scanning.                               |
+| `-PP`             | Uses ICMP Timestamp Requests for host discovery.                                 |
+| `192.168.29.0/24` | Network range being scanned.                                                     |
+
+### Working
+
+1. Nmap sends ICMP Timestamp Request packets to each target IP address.
+2. Active hosts respond with ICMP Timestamp Reply packets.
+3. Nmap analyzes the replies and marks responding hosts as Up.
+4. The replies contain timestamp information from the target system.
+
+### Attack Execution Screenshot
+
+![ICMP Timestamp Host Scan Attack](screenshots/attacker/icmp_timestamp_scan_attack.png)
+
+### Wireshark Display Filter
+
+```wireshark
+icmp
+```
+
+### Filter Explanation
+
+Displays ICMP packets generated during the scan, including:
+
+* ICMP Timestamp Request (Type 13)
+* ICMP Timestamp Reply (Type 14)
+
+This filter helps isolate ICMP Timestamp discovery traffic from other network activity.
+
+### Wireshark Analysis Screenshot
+
+![ICMP Timestamp Host Scan](screenshots/wireshark/icmp_timestamp_scan_capture.png)
+
+### Packet Capture
+
+[Wireshark Pcap file](pcaps/icmp_timestamp_scan.pcap)
+
+### Observations
+
+* ICMP Timestamp Request packets were sent to hosts within the target network.
+* Active hosts responded with ICMP Timestamp Reply packets.
+* Reachable systems were successfully identified.
+* Timestamp values from responding hosts were visible in the packet capture.
+
+### Security Significance
+
+ICMP Timestamp scanning can be used to identify active hosts when traditional ICMP Echo Requests are filtered. Additionally, timestamp responses may reveal system clock information that could be useful during reconnaissance.
+
+### Report
+
+[Report](reports/icmp_timestamp_scan_report.md)
+
+
+## 6. ICMP Address Mask Host Scan
+
+### Objective
+
+An ICMP Address Mask host discovery scan is a reconnaissance technique used to identify active hosts by sending ICMP Address Mask Request packets and analyzing the corresponding Address Mask Reply responses. Hosts that respond are considered active and reachable on the network.
+
+### Attack Tool
+
+**Nmap**
+
+### Command Used
+
+```bash
+sudo nmap -sn -PM 192.168.29.0/24
+```
+
+### Command Explanation
+
+| Option            | Description                                                                      |
+| ----------------- | -------------------------------------------------------------------------------- |
+| `sudo`            | Runs Nmap with administrative privileges, allowing raw ICMP packet transmission. |
+| `-sn`             | Performs host discovery only; skips port scanning.                               |
+| `-PM`             | Uses ICMP Address Mask Requests for host discovery.                              |
+| `192.168.29.0/24` | Network range being scanned.                                                     |
+
+### Working
+
+1. Nmap sends ICMP Address Mask Request packets to each target host.
+2. Active hosts may respond with ICMP Address Mask Reply packets containing subnet mask information.
+3. Nmap analyzes the replies and marks responding hosts as Up.
+4. Hosts that do not respond may be offline or configured to ignore Address Mask Requests.
+
+### Attack Execution Screenshot
+
+![ICMP Address Mask Host Scan Attack](screenshots/attacker/icmp_addressmask_scan_attack.png)
+
+### Wireshark Display Filter
+
+```wireshark
+icmp
+```
+
+### Filter Explanation
+
+Displays ICMP packets generated during the scan, including:
+
+* ICMP Address Mask Request (Type 17)
+* ICMP Address Mask Reply (Type 18)
+
+This filter helps isolate ICMP Address Mask discovery traffic from other network activity.
+
+### Wireshark Analysis Screenshot
+
+![ICMP Address Mask Host Scan](screenshots/wireshark/icmp_addressmask_scan_capture.png)
+
+### Packet Capture
+
+[Wireshark Pcap file](pcaps/icmp_addressmask_scan.pcap)
+
+### Observations
+
+* ICMP Address Mask Request packets were sent to hosts within the target network.
+* Responding hosts returned ICMP Address Mask Reply packets.
+* Active systems were successfully identified.
+* Subnet mask information was visible in the packet capture.
+
+### Security Significance
+
+ICMP Address Mask scanning is a legacy host discovery technique that can reveal both active hosts and subnet mask information. While rarely used in modern networks, it remains useful for understanding ICMP-based reconnaissance methods and protocol behavior.
+
+### Report
+
+[Report](reports/icmp_addressmask_scan_report.md)
+
+
+## 7. UDP Host Scan
+
+### Objective
+
+A UDP host discovery is a reconnaissance technique used to identify active hosts by sending UDP packets to specific ports and analyzing the responses. Hosts that respond with UDP replies or ICMP Port Unreachable messages are considered active and reachable on the network.
+
+### Attack Tool
+
+**Nmap**
+
+### Command Used
+
+```bash id="udpdisc"
+sudo nmap -sn -PU53,67,123 192.168.29.0/24
+```
+
+### Command Explanation
+
+| Option            | Description                                                                 |
+| ----------------- | --------------------------------------------------------------------------- |
+| `sudo`            | Runs Nmap with administrative privileges, allowing raw packet transmission. |
+| `-sn`             | Performs host discovery only; skips port scanning.                          |
+| `-PU53,67,123`    | Sends UDP probes to ports 53 (DNS), 67 (DHCP), and 123 (NTP).               |
+| `192.168.29.0/24` | Network range being scanned.                                                |
+
+### Working
+
+1. Nmap sends UDP packets to ports 53, 67, and 123 on each target host.
+2. Active hosts may respond with UDP packets if the service is available.
+3. If the ports are closed, hosts often return ICMP Port Unreachable messages.
+4. Any valid response indicates that the host is reachable.
+5. Nmap marks responding hosts as Up.
+
+### Attack Execution Screenshot
+
+![UDP Host Scan Attack](screenshots/attacker/udp_host_scan_attack.png)
+
+### Wireshark Display Filter
+
+```wireshark
+udp || icmp
+```
+
+### Filter Explanation
+
+Displays packets generated during the scan, including:
+
+* UDP Probe Packets
+* UDP Responses
+* ICMP Destination Unreachable (Port Unreachable) Messages
+
+This filter helps isolate UDP-based host discovery traffic from other network activity.
+
+### Wireshark Analysis Screenshot
+
+![UDP Host Scan](screenshots/wireshark/udp_host_scan_capture.png)
+
+### Packet Capture
+
+[Wireshark Pcap file](pcaps/udp_host_scan.pcap)
+
+### Observations
+
+* UDP probes were sent to ports 53, 67, and 123 on target hosts.
+* Some hosts responded with UDP packets from active services.
+* Closed ports generated ICMP Port Unreachable messages.
+* Reachable systems were successfully identified through UDP-based discovery.
+
+### Security Significance
+
+UDP host discovery is useful when ICMP traffic is filtered or blocked. It leverages responses from common UDP services to identify active hosts and can reveal the presence of DNS, DHCP, and NTP services on the network.
+
+### Report
+
+[Report](reports/udp_host_scan_report.md)
