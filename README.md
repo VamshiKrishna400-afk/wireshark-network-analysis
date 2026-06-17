@@ -91,7 +91,7 @@ A Kali Linux system was used to generate controlled network activity and securit
 
 ## Attack Documentation
 
-Detailed attack scenarios, Wireshark analysis, filters, screenshots, and observations can be found in [HostDiscovery_ATTACKS.md](HostDiscovery_ATTACKS.md), [PortScanning_ATTACKS.md](PortScanning_ATTACKS.md).
+Detailed attack scenarios, Wireshark analysis, filters, screenshots, and observations can be found in [HostDiscovery_ATTACKS.md](HostDiscovery_ATTACKS.md), [PortScanning_ATTACKS.md](PortScanning_ATTACKS.md), [DoS_ATTACKS.md](DoS_ATTACKS.md).
 
 This project utilizes Wireshark for network traffic capture and analysis. To better understand the Wireshark interface, packet analysis process, packet panes, and filtering mechanisms used throughout this project, refer to the detailed documentation is found in [WIRESHARK_INFO.md](WIRESHARK_INFO.md).
 
