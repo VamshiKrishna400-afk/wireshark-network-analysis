@@ -110,7 +110,7 @@ sudo nmap -sS <target-ip>
 
 ### Attack Execution Screenshot
 
-![TCP SYN Scan Attack](screenshots/attacker/tcp_syn_scan_attack.png)
+![TCP SYN Scan Attack](screenshots/attacker/tcp_stealth_scan_attack.png)
 
 ### Wireshark Display Filter
 
@@ -130,11 +130,11 @@ This filter helps isolate TCP SYN scanning traffic and observe how Nmap identifi
 
 ### Wireshark Analysis Screenshot
 
-![TCP SYN Scan](screenshots/wireshark/tcp_syn_scan_capture.png)
+![TCP SYN Scan](screenshots/wireshark/tcp_stealth_scan_capture.png)
 
 ### Packet Capture
 
-[Wireshark Pcap file](pcaps/tcp_syn_scan.pcap)
+[Wireshark Pcap file](pcaps/tcp_stealth_scan.pcap)
 
 ### Observations
 
