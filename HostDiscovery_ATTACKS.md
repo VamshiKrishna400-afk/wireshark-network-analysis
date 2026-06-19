@@ -11,18 +11,18 @@ An ICMP (Internet Control Message Protocol) Echo host discovery scan, often call
 ### Command Used
 
 ```bash id="tt1g0v"
-sudo nmap -sn -PE 192.168.29.0/24
+sudo nmap -sn -PE --disable-arp-ping 192.168.29.0/24
 ```
 
 ### Command Explanation
 
-| Option           | Description                                                                     |
-| ---------------- | --------------------------------------------------------------------------------|
-| `sudo`            | Runs Nmap with administrative privileges, allowing it to send raw ICMP packets.|
-| `-sn`             | Performs host discovery only (Ping Scan); skips port scanning.                 |
-| `-PE`             | Uses ICMP Echo Requests (Ping) to discover active hosts.                       |
-| `192.168.29.0/24` | Network range being scanned.                                                   |
-
+| Option             | Description                                                                    |
+| -------------------|--------------------------------------------------------------------------------|
+| `sudo`             | Runs Nmap with administrative privileges, allowing it to send raw ICMP packets.|
+| `-sn`              | Performs host discovery only (Ping Scan); skips port scanning.                 |
+| `-PE`              | Uses ICMP Echo Requests (Ping) to discover active hosts.                       |
+|`--disable-arp-ping`| --disable-arp-ping was used to prevent Nmap from performing ARP-based host discovery on the local network and force it to use the specified probe (such as ICMP Echo -PE) for host discovery instead.                           |           
+| `192.168.29.0/24`  | Network range being scanned.                                                   |
 ### Working  
   
 1. Nmap sends an ICMP Echo Request (Type 8) to each target IP.  
@@ -161,17 +161,18 @@ A TCP SYN host discovery scan is a reconnaissance technique used to identify act
 ### Command Used
 
 ```bash
-sudo nmap -sn -PS80,443 192.168.29.0/24
+sudo nmap -sn -PS80,443 --disable-arp-ping 192.168.29.0/24
 ```
 
 ### Command Explanation
 
-| Option            | Description                                                                 |
-| ----------------- | --------------------------------------------------------------------------- |
-| `sudo`            | Runs Nmap with administrative privileges, allowing raw packet transmission. |
-| `-sn`             | Performs host discovery only; skips port scanning.                          |
-| `-PS80,443`       | Sends TCP SYN probes to ports 80 (HTTP) and 443 (HTTPS).                    |
-| `192.168.29.0/24` | Network range being scanned.                                                |
+| Option             | Description                                                                 |
+| ------------------ | --------------------------------------------------------------------------- |
+| `sudo`             | Runs Nmap with administrative privileges, allowing raw packet transmission. |
+| `-sn`              | Performs host discovery only; skips port scanning.                          |
+| `-PS80,443`        | Sends TCP SYN probes to ports 80 (HTTP) and 443 (HTTPS).                    |
+|`--disable-arp-ping`| --disable-arp-ping was used to prevent Nmap from performing ARP-based host discovery on the local network and force it to use the specified probe (such as TCP SYN -PS80,443) for host discovery instead.                    |
+| `192.168.29.0/24`  | Network range being scanned.                                                |
 
 ### Working
 
@@ -238,17 +239,18 @@ A TCP ACK host discovery scan is a reconnaissance technique used to identify act
 ### Command Used
 
 ```bash
-sudo nmap -sn -PA80,443 192.168.29.0/24
+sudo nmap -sn -PA80,443 --disable-arp-ping 192.168.29.0/24
 ```
 
 ### Command Explanation
 
-| Option            | Description                                                                 |
-| ----------------- | --------------------------------------------------------------------------- |
-| `sudo`            | Runs Nmap with administrative privileges, allowing raw packet transmission. |
-| `-sn`             | Performs host discovery only; skips port scanning.                          |
-| `-PA80,443`       | Sends TCP ACK probes to ports 80 (HTTP) and 443 (HTTPS).                    |
-| `192.168.29.0/24` | Network range being scanned.                                                |
+| Option             | Description                                                                 |
+| ------------------ | --------------------------------------------------------------------------- |
+| `sudo`             | Runs Nmap with administrative privileges, allowing raw packet transmission. |
+| `-sn`              | Performs host discovery only; skips port scanning.                          |
+| `-PA80,443`        | Sends TCP ACK probes to ports 80 (HTTP) and 443 (HTTPS).                    |
+|`--disable-arp-ping`| --disable-arp-ping was used to prevent Nmap from performing ARP-based host discovery on the local network and force it to use the specified probe (such as TCP ACK -PA80,443) for host discovery instead.                    |
+| `192.168.29.0/24`  | Network range being scanned.                                                |
 
 ### Working
 
@@ -313,17 +315,18 @@ An ICMP Timestamp host discovery scan is a reconnaissance technique used to iden
 ### Command Used
 
 ```bash id="icmpts"
-sudo nmap -sn -PP 192.168.29.0/24
+sudo nmap -sn -PP --disable-arp-ping 192.168.29.0/24
 ```
 
 ### Command Explanation
 
-| Option            | Description                                                                      |
-| ----------------- | -------------------------------------------------------------------------------- |
-| `sudo`            | Runs Nmap with administrative privileges, allowing raw ICMP packet transmission. |
-| `-sn`             | Performs host discovery only; skips port scanning.                               |
-| `-PP`             | Uses ICMP Timestamp Requests for host discovery.                                 |
-| `192.168.29.0/24` | Network range being scanned.                                                     |
+| Option             | Description                                                                      |
+| -------------------| -------------------------------------------------------------------------------- |
+| `sudo`             | Runs Nmap with administrative privileges, allowing raw ICMP packet transmission. |
+| `-sn`              | Performs host discovery only; skips port scanning.                               |
+| `-PP`              | Uses ICMP Timestamp Requests for host discovery.                                 |
+|`--disable-arp-ping`| --disable-arp-ping was used to prevent Nmap from performing ARP-based host discovery on the local network and force it to use the specified probe (such as ICMP Timestamp -PP) for host discovery instead.                        |
+| `192.168.29.0/24`  | Network range being scanned.                                                     |
 
 ### Working
 
@@ -388,17 +391,18 @@ An ICMP Address Mask host discovery scan is a reconnaissance technique used to i
 ### Command Used
 
 ```bash
-sudo nmap -sn -PM 192.168.29.0/24
+sudo nmap -sn -PM --disable-arp-ping 192.168.29.0/24
 ```
 
 ### Command Explanation
 
-| Option            | Description                                                                      |
-| ----------------- | -------------------------------------------------------------------------------- |
-| `sudo`            | Runs Nmap with administrative privileges, allowing raw ICMP packet transmission. |
-| `-sn`             | Performs host discovery only; skips port scanning.                               |
-| `-PM`             | Uses ICMP Address Mask Requests for host discovery.                              |
-| `192.168.29.0/24` | Network range being scanned.                                                     |
+| Option             | Description                                                                      |
+| -----------------  | -------------------------------------------------------------------------------- |
+| `sudo`             | Runs Nmap with administrative privileges, allowing raw ICMP packet transmission. |
+| `-sn`              | Performs host discovery only; skips port scanning.                               |
+| `-PM`              | Uses ICMP Address Mask Requests for host discovery.                              |
+|`--disable-arp-ping`| --disable-arp-ping was used to prevent Nmap from performing ARP-based host discovery on the local network and force it to use the specified probe (such as ICMP Address Mask -PM) for host discovery instead.                     |
+| `192.168.29.0/24`  | Network range being scanned.                                                     |
 
 ### Working
 
@@ -463,17 +467,18 @@ A UDP host discovery is a reconnaissance technique used to identify active hosts
 ### Command Used
 
 ```bash id="udpdisc"
-sudo nmap -sn -PU53,67,123 192.168.29.0/24
+sudo nmap -sn -PU53,67,123 --disable-arp-ping 192.168.29.0/24
 ```
 
 ### Command Explanation
 
-| Option            | Description                                                                 |
-| ----------------- | --------------------------------------------------------------------------- |
-| `sudo`            | Runs Nmap with administrative privileges, allowing raw packet transmission. |
-| `-sn`             | Performs host discovery only; skips port scanning.                          |
-| `-PU53,67,123`    | Sends UDP probes to ports 53 (DNS), 67 (DHCP), and 123 (NTP).               |
-| `192.168.29.0/24` | Network range being scanned.                                                |
+| Option             | Description                                                                 |
+| -------------------| --------------------------------------------------------------------------- |
+| `sudo`             | Runs Nmap with administrative privileges, allowing raw packet transmission. |
+| `-sn`              | Performs host discovery only; skips port scanning.                          |
+| `-PU53,67,123`     | Sends UDP probes to ports 53 (DNS), 67 (DHCP), and 123 (NTP).               |
+|`--disable-arp-ping`| --disable-arp-ping was used to prevent Nmap from performing ARP-based host discovery on the local network and force it to use the specified probe (such as UDP -PU53,,67,123) for host discovery instead.                    |
+| `192.168.29.0/24`  | Network range being scanned.                                                |
 
 ### Working
 
