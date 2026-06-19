@@ -261,7 +261,7 @@ sudo nmap -sn -PA80,443 --disable-arp-ping 192.168.29.0/24
 
 ### Attack Execution Screenshot
 
-![TCP ACK Host Scan Attack](screenshots/attacker/tcp_ack_scan_attack.png)
+![TCP ACK Host Scan Attack](screenshots/attacker/tcp_ack_host_scan_attack.png)
 
 ### Wireshark Display Filter
 
@@ -280,11 +280,11 @@ This filter helps isolate TCP ACK host discovery traffic from other network acti
 
 ### Wireshark Analysis Screenshot
 
-![TCP ACK Host Scan](screenshots/wireshark/tcp_ack_scan_capture.png)
+![TCP ACK Host Scan](screenshots/wireshark/tcp_ack_host_scan_capture.png)
 
 ### Packet Capture
 
-[Wireshark Pcap file](pcaps/tcp_ack_scan.pcap)
+[Wireshark Pcap file](pcaps/tcp_ack_host_scan.pcap)
 
 ### Observations
 
