@@ -534,7 +534,7 @@ TCP XMAS Scans are used to evade basic packet filtering and identify open ports 
 [Report](reports/tcp_xmas_scan_report.md)
 
 
-## 8. TCP Idle Scan
+<!--## 8. TCP Idle Scan
 
 ### Objective
 
@@ -609,4 +609,4 @@ TCP Idle Scans are highly stealthy because the target sees the zombie host as th
 
 ### Report
 
-[Report](reports/tcp_idle_scan_report.md)
+[Report](reports/tcp_idle_scan_report.md)-->
